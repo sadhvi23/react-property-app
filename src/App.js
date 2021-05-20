@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import Launch from './components/launch'
+import Launch from './launchComponents/launch'
 
 class App extends React.Component {
   render (){
