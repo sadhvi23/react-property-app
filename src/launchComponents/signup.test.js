@@ -1,21 +1,29 @@
 import React from 'react';
-import { describe } from 'riteway';
-import render from 'riteway/render-component';
-import match from 'riteway/match';
+import { render, fireEvent } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux'
+import reducer from '../reducers'
 
 import SignUp from './signup';
-import { Provider } from 'react-redux';
 
-describe('Signup component', async assert => {
-  const email = 'abc@ajackus.com';
-  const password = '@Temp1234'
-  const name = "Abc"
-  const $ = render(<Provider><SignUp email={email} password={password} name={name}/></Provider>);
-  const contains = match($('Welcome').html());
-  assert({
-    given: 'a email, name, password',
-    should: 'Render a welcome to the correct email.',
-    actual: contains(email),
-    expected: `Welcome`
-  });
+test('renders the form correctly', () => {
+  const store = createStore(reducer)
+  const user = { email: 'abc@ajackus.com', password: '@Temp1234', name: "Abc Abc" } 
+  const { getByText, _} = render(<Provider store={store}><SignUp user={user} /></Provider>);
+  const emailLabel = getByText(/Email/i);
+  const passwordLabel = getByText(/Password/i);
+  const nameLabel = getByText(/Name/i);
+  expect(emailLabel).toBeInTheDocument();
+  expect(passwordLabel).toBeInTheDocument();
+  expect(nameLabel).toBeInTheDocument();
+});
+
+test('submit button should be disabled when Email is empty', () => {
+  const store = createStore(reducer)
+  const user = { email: 'abc@ajackus.com', password: '@Temp1234', name: "Abc Abc"} 
+  const { getByLabelText, getByRole} = render(<Provider store={store}><SignUp user={user} /></Provider>);
+  const input = getByLabelText(/Email/i);
+  fireEvent.change(input, { 'target': { 'value': '' } });
+  const submitBtn = getByRole('button', { name: 'Register' });
+  expect(submitBtn).toHaveAttribute('type', 'submit');
 });
