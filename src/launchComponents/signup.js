@@ -1,4 +1,4 @@
-import { withRouter } from "react-router-dom";
+// import { withRouter } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { signUp } from "../actions/users";
@@ -12,7 +12,7 @@ const SignUp = (props) => {
   // Handle input changes
   const handleInputChange = event => {
     const { name, value } = event.target;
-    props.setUser({ ...props.user, [name]: value });
+    props.setUser({ ...props.user, [name]: value }, props.validateField(name, value));
   };
 
   // Store details and use services
@@ -55,4 +55,4 @@ const SignUp = (props) => {
   )
 };
 
-export default withRouter(SignUp);
+export default SignUp;

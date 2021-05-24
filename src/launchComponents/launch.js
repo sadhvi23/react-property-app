@@ -5,14 +5,42 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from './login'
 import SignUp from './signup'
 import Home from './home'
+import FormErrors from './formValidations/formErrors'
 
 const Launch = () => {
   const initialUserState = {
     email: "",
     password: "",
-    name: ""
+    name: "",
+    formErrors: { email: "", password: "" },
+    emailValid: false,
+    passwordValid: false,
+    formValid: false
   };
   const [user, setUser] = useState(initialUserState);
+
+  // Validate form fields and form validation
+  const validateField= (fieldName, value) => {
+    let { formErrors, emailValid, passwordValid }  = user
+    switch(fieldName) {
+      case 'email':
+        emailValid = (/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i).test(value)
+        formErrors.email = emailValid ? '' : ' is invalid';
+        break;
+      case 'password':
+        passwordValid = value.length >= 4;
+        formErrors.password = passwordValid ? '': ' is too short';
+        break;
+      default:
+        break;
+    }
+    setUser({formErrors: formErrors, emailValid: emailValid,passwordValid: passwordValid }, validateForm);
+  }
+
+  // Do form validation
+  const validateForm = () => {
+    setUser({formValid: user.emailValid && user.passwordValid});
+  }
 
   return (<Router>
     <div className="App">
@@ -38,7 +66,10 @@ const Launch = () => {
             <Route path="/sign-up" render={() => {
               return(
                 <div>
-                  <SignUp user={user} setUser={setUser}/>
+                  <SignUp user={user} setUser={setUser} validateField={validateField}/>
+                  <div className="panel panel-default">
+                    <FormErrors formErrors={user.formErrors} />
+                  </div>
                 </div>
               )
             }} />
@@ -46,7 +77,10 @@ const Launch = () => {
               <Route path="/sign-in" render={() => {
                 return(
                   <div>
-                    <Login user={user} setUser={setUser}/>
+                    <Login user={user} setUser={setUser} validateField={validateField}/>
+                    <div className="panel panel-default">
+                      <FormErrors formErrors={user.formErrors} />
+                    </div>
                   </div>
                 )
               }} />
@@ -62,7 +96,10 @@ const Launch = () => {
             <Route path="/" render={() => {
               return(
                 <div>
-                  <Login user={user} setUser={setUser}/>
+                  <Login user={user} setUser={setUser} validateField={validateField}/>
+                  <div className="panel panel-default">
+                    <FormErrors formErrors={user.formErrors} />
+                  </div>
                 </div>
               )
             }} />

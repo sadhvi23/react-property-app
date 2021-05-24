@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { withRouter } from "react-router-dom";
+// import { withRouter } from "react-router-dom";
 
 import { login } from "../actions/users";
 import { Button } from "./formLayouts/buttonLayout"
@@ -13,8 +13,8 @@ const Login = (props) => {
   // Handle input changes
   const handleInputChange = event => {
     const { name, value } = event.target;
-    props.setUser({ ...props.user, [name]: value });
-  };
+    props.setUser({ ...props.user, [name]: value }, props.validateField(name, value));
+  };  
 
   // Store details and use service
   const saveUser = async e => {
@@ -50,9 +50,9 @@ const Login = (props) => {
       <Input divClass="form-group" label="Password" type="password" class="form-control" placeholder=
       "Enter password" value={props.user.password} handleChange={handleInputChange}/>
 
-      <Button type="submit" class="btn btn-dark btn-lg btn-block" label="Sign in" />
+      <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(props.user.email && props.user.password)} label="Sign in" />
     </form>
   );
 };
 
-export default withRouter(Login);
+export default Login;
