@@ -1,13 +1,11 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux'
-import reducer from '../reducers'
 
 import SignUp from './signup';
+import store from '../store'
 
 test('renders the form correctly', () => {
-  const store = createStore(reducer)
   const user = { email: 'abc@ajackus.com', password: '@Temp1234', name: "Abc Abc" } 
   const { getByText, _} = render(<Provider store={store}><SignUp user={user} /></Provider>);
   const emailLabel = getByText(/Email/i);
@@ -19,7 +17,6 @@ test('renders the form correctly', () => {
 });
 
 test('submit button should be disabled when Email is empty', () => {
-  const store = createStore(reducer)
   const user = { email: 'abc@ajackus.com', password: '@Temp1234', name: "Abc Abc"} 
   const { getByLabelText, getByRole} = render(<Provider store={store}><SignUp user={user} /></Provider>);
   const input = getByLabelText(/Email/i);

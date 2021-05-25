@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 
 import Login from './login'
 import SignUp from './signup'
 import Home from './home'
-import FormErrors from './formValidations/formErrors'
+import { ToasterMessage } from "./formLayouts/toasterMessage"
+import { RouteLayout } from "./formLayouts/routeLayout"
+import LinkLayout from "./formLayouts/linkLayout"
 
 const Launch = () => {
   const initialUserState = {
@@ -15,94 +17,42 @@ const Launch = () => {
     formErrors: { email: "", password: "" },
     emailValid: false,
     passwordValid: false,
-    formValid: false
+    formValid: false,
+    error: ""
   };
   const [user, setUser] = useState(initialUserState);
 
-  // Validate form fields and form validation
-  const validateField= (fieldName, value) => {
-    let { formErrors, emailValid, passwordValid }  = user
-    switch(fieldName) {
-      case 'email':
-        emailValid = (/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i).test(value)
-        formErrors.email = emailValid ? '' : ' is invalid';
-        break;
-      case 'password':
-        passwordValid = value.length >= 4;
-        formErrors.password = passwordValid ? '': ' is too short';
-        break;
-      default:
-        break;
-    }
-    setUser({formErrors: formErrors, emailValid: emailValid,passwordValid: passwordValid }, validateForm);
-  }
-
-  // Do form validation
-  const validateForm = () => {
-    setUser({formValid: user.emailValid && user.passwordValid});
-  }
+  // Handle input changes
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setUser({ ...user, [name]: value });
+  }; 
 
   return (<Router>
     <div className="App">
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
-          <Link className="navbar-brand" to={"/sign-in"}>AjackusProperty</Link>
+          <LinkLayout path="/sign-in" label="AjackusProperty" />
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={"/sign-in"}>Sign in</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to={"/sign-up"}>Sign up</Link>
-              </li>
+              <LinkLayout path="/sign-in" label="Sign in" />
+              <LinkLayout path="/sign-up" label="Sign up" />
             </ul>
-          </div>
+          </div> 
+          <ToasterMessage message={user.error} />
         </div>
       </nav>
 
       <div className="outer">
         <div className="inner">
           <Switch>
-            <Route path="/sign-up" render={() => {
-              return(
-                <div>
-                  <SignUp user={user} setUser={setUser} validateField={validateField}/>
-                  <div className="panel panel-default">
-                    <FormErrors formErrors={user.formErrors} />
-                  </div>
-                </div>
-              )
-            }} />
+            <RouteLayout path="/sign-up" class={SignUp} user={user} setUser={setUser} handleInputChange={handleInputChange} />
             {user == null ? (
-              <Route path="/sign-in" render={() => {
-                return(
-                  <div>
-                    <Login user={user} setUser={setUser} validateField={validateField}/>
-                    <div className="panel panel-default">
-                      <FormErrors formErrors={user.formErrors} />
-                    </div>
-                  </div>
-                )
-              }} />
+              <RouteLayout path="/sign-in" class={Login} user={user} setUser={setUser} handleInputChange={handleInputChange} />
             ) : (
-              <Route path="/home" render={() => {
-                return(
-                  <div>
-                    <Home user={user} setUser={setUser}/>
-                  </div>
-                )
-              }} />
+              <RouteLayout path="/home" class={Home} user={user} setUser={setUser} handleInputChange={handleInputChange} />
             )}
-            <Route path="/" render={() => {
-              return(
-                <div>
-                  <Login user={user} setUser={setUser} validateField={validateField}/>
-                  <div className="panel panel-default">
-                    <FormErrors formErrors={user.formErrors} />
-                  </div>
-                </div>
-              )
-            }} />
+            <RouteLayout path="/" class={Login} user={user} setUser={setUser} handleInputChange={handleInputChange} />
           </Switch>
         </div>
       </div>

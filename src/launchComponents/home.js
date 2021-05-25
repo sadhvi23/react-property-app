@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 const Home = (props) => {
   const handleLogout = e => {
     e.preventDefault();
-    props.setUser({ email: '', password: '' })
+    props.setUser({ ...props.user, email: '', password: '' })
     props.history.push("/login");
   }
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const FormErrors = ({formErrors}) =>
-  <div className='formErrors'>
+  <div>
     {Object.keys(formErrors).map((fieldName, i) => {
       if(formErrors[fieldName].length > 0){
         return (
