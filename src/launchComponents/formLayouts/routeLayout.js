@@ -6,9 +6,9 @@ export const RouteLayout = (props) => {
     <Route path={props.path} render={() => {
       return(
         <div>
-          <props.class user={props.user} setUser={props.setUser} handleInputChange={props.handleInputChange}/> 
+          <props.class formik={props.formik}/> 
           <div className="panel panel-default">
-            <FormErrors formErrors={props.user.formErrors} />
+            <FormErrors formErrors={props.formik.values.formErrors} />
           </div>
         </div>
       )

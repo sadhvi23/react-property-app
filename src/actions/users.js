@@ -5,7 +5,7 @@ import {
 import { userService } from "../services/userService";
 
 // User login service
-export const login = (email, password) => async (dispatch) => {
+export const login = (email, password, _) => async (dispatch) => {
   try {
     const res = await userService.login({ email, password });
 
@@ -21,7 +21,7 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 // User Signup service
-export const signUp = (email, name, password) => async (dispatch) => {
+export const signUp = (email, password, name) => async (dispatch) => {
   try {
     const res = await userService.signUp({ email, name, password });
 

@@ -4,12 +4,11 @@ import { withRouter } from "react-router-dom";
 const Home = (props) => {
   const handleLogout = e => {
     e.preventDefault();
-    props.setUser({ ...props.user, email: '', password: '' })
     props.history.push("/login");
   }
   return (
     <div>
-      <h1>Welcome {props.user.name}</h1>
+      <h1>Welcome {props.formik.values.name}</h1>
       <button onClick={handleLogout}>Logout</button>
     </div>
   )
