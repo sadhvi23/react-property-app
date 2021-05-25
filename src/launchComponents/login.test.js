@@ -1,20 +1,24 @@
 import React from 'react';
-import { describe } from 'riteway';
-import render from 'riteway/render-component';
-import match from 'riteway/match';
-
-import Login from './login';
+import { render, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
-describe('Login component', async assert => {
-  const email = 'abc@ajackus.com';
-  const password = '@Temp1234'
-  const $ = render(<Provider><Login email={email} password={password}/></Provider>);
-  const contains = match($('Welcome').html());
-  assert({
-    given: 'a email and password',
-    should: 'Render a welcome to the correct email.',
-    actual: contains(email),
-    expected: `Welcome`
-  });
+import Login from './login';
+import store from '../store'
+
+test('renders the form correctly', () => {
+  const user = { email: 'abc@ajackus.com', password: '@Temp1234' } 
+  const { getByText, _} = render(<Provider store={store}><Login user={user} /></Provider>);
+  const emailLabel = getByText(/Email/i);
+  const passwordLabel = getByText(/Password/i);
+  expect(emailLabel).toBeInTheDocument();
+  expect(passwordLabel).toBeInTheDocument();
+});
+
+test('submit button should be disabled when Email is empty', () => {
+  const user = { email: 'abc@ajackus.com', password: '@Temp1234'} 
+  const { getByLabelText, getByRole} = render(<Provider store={store}><Login user={user} /></Provider>);
+  const input = getByLabelText(/Email/i);
+  fireEvent.change(input, { 'target': { 'value': '' } });
+  const submitBtn = getByRole('button', { name: 'Sign in' });
+  expect(submitBtn).toHaveAttribute('type', 'submit');
 });
