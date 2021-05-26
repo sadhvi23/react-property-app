@@ -5,10 +5,10 @@ import { useFormik } from 'formik';
 
 import Login from './login'
 import SignUp from './signup'
-import Home from './home'
 import { ToasterMessage } from "./formLayouts/toasterMessage"
 import { RouteLayout } from "./formLayouts/routeLayout"
 import LinkLayout from "./formLayouts/linkLayout"
+import TabHeaders from "../components/tabHeaders"
 
 const Launch = () => {
 
@@ -52,7 +52,7 @@ const Launch = () => {
             {user == null ? (
               <RouteLayout path="/sign-in" class={Login} setUser={setUser} formik={formik}  />
             ) : (
-              <RouteLayout path="/home" class={Home} setUser={setUser} formik={formik}/>
+              <RouteLayout path="/dashboard" class={TabHeaders} setUser={setUser} formik={formik}/>
             )}
             <RouteLayout path="/" class={Login} setUser={setUser} formik={formik} />
           </Switch>

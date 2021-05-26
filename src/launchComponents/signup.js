@@ -27,7 +27,7 @@ const SignUp = (props) => {
           token: data.token
         });
         localStorage.setItem('userId', data.user.id)
-        props.history.push("/home")
+        props.history.push("/dashboard")
         props.setUser({...props.formik.values, email: '', name: '', password: '', message: "Request has been processed successfully" })
       })
       .catch(e => {
@@ -40,13 +40,13 @@ const SignUp = (props) => {
     <form onSubmit={saveUser}>
       <h3>Register</h3>
 
-      <Input divClass="form-group" label="Name" type="name" class="form-control" placeholder=
+      <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
       "Enter name" value={props.formik.values.name} handleChange={props.formik.handleChange}/>
 
-      <Input divClass="form-group" label="Email" type="email" class="form-control" placeholder=
+      <Input divClass="form-group" label="Email" type="email" name="email" class="form-control" placeholder=
       "Enter email" value={props.formik.values.email} handleChange={props.formik.handleChange}/> 
 
-      <Input divClass="form-group" label="Password" type="password" class="form-control" placeholder=
+      <Input divClass="form-group" label="Password" type="password" name="password" class="form-control" placeholder=
       "Enter password" value={props.formik.values.password} handleChange={props.formik.handleChange}/>
 
       <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(props.formik.values.email && props.formik.values.password)} label="Register" />
