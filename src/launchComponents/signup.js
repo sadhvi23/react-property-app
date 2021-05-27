@@ -1,14 +1,43 @@
+import { useDispatch } from "react-redux";
+import {withRouter} from 'react-router-dom';
+
 import { signUp } from "../actions/users";
 import { Button } from "./formLayouts/buttonLayout"
 import { Input } from "./formLayouts/inputLayout"
+import validateForm from "../helpers/validateForm"
 
 // Signup Function to handle registration
 const SignUp = (props) => {
-  
-  props.formik.values.className = signUp
+  const dispatch = useDispatch();
+
+   // Store details and use services
+   const saveUser = async e => {
+    e.preventDefault()
+    // Validate when user click on login or register
+    validateForm(props.formik.values, props.setUser, e.target.name, e.target.value)
+    const { email, name, password } = props.formik.values;
+    dispatch(signUp(email, password, name))
+      .then(data => { 
+        props.setUser({
+          ...props.formik.values,
+          id: data.user.id,
+          email: data.user.email,
+          password: data.user.password,
+          name: data.user.name,
+          token: data.token
+        });
+        localStorage.setItem('userId', data.user.id)
+        props.history.push("/home")
+        props.setUser({...props.formik.values, email: '', name: '', password: '', message: "Request has been processed successfully" })
+      })
+      .catch(e => {
+        console.log(e.message);
+        props.setUser({...props.formik.values, message: e.message})
+      });
+  };
 
   return (
-    <form onSubmit={props.formik.handleSubmit}>
+    <form onSubmit={saveUser}>
       <h3>Register</h3>
 
       <Input divClass="form-group" label="Name" type="name" class="form-control" placeholder=
@@ -25,4 +54,4 @@ const SignUp = (props) => {
   )
 };
 
-export default SignUp;
+export default withRouter(SignUp);
