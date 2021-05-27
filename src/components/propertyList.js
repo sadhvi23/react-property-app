@@ -25,32 +25,23 @@ const PropertyList = () => {
   }
   
   return (
-    <>
-      <div >
-        <div>
-          <h4 className="title">Properties</h4>
-        </div>
-      </div>
-      <br />
-      <div>
+    <div >
+      <h4 className="title">Properties</h4>
+      {data.properties && data.properties.length ? (
+        data.properties.map((property, index) => (
+          <PropertyItem
+          property={property}
+          key={index}
+          />
+        ))
+      ) : (
         <div >
-          {data.properties && data.properties.length ? (
-            data.properties.map((property, index) => (
-              <PropertyItem
-              property={property}
-              key={index}
-              />
-            ))
-          ) : (
-            <div >
-              <span>
-                No properties found!
-              </span>
-            </div>
-          )}
+          <span>
+            No properties found!
+          </span>
         </div>
-      </div>
-    </>
+      )}
+    </div>
   );
 };
 

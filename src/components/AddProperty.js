@@ -16,7 +16,8 @@ const AddProperty = (props) => {
       name: "",
       is_approved: false,
       is_available: false,
-      is_active: false
+      is_active: false,
+      message: ""
     },
     onSubmit: values => {},
   });
@@ -39,11 +40,11 @@ const AddProperty = (props) => {
         });
         localStorage.setItem('propertyId', data.id)
         props.history.push("/properties")
-        setProperty({...props.formik.values, name:'', message: "Request has been processed successfully" })
+        setProperty({...property, name:'', message: "Request has been processed successfully" })
       })
       .catch(e => {
         console.log(e.message);
-        setProperty({...props.formik.values, message: e.message})
+        setProperty({...property, message: e.message})
       });
     }
   };
@@ -55,7 +56,7 @@ const AddProperty = (props) => {
     <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
     "Enter name" value={formik.values.name} handleChange={formik.handleChange}/>
 
-    <label>IsApproved</label>
+    <label name="is_approved" value={formik.values.is_approved}>IsApproved</label>
     <Input divClass="form-group" label="true" type="radio" name="is_approved" handleChange={formik.handleChange} value={formik.values.is_approved} />
     <Input divClass="form-group" label="false" type="radio" name="is_approved" handleChange={formik.handleChange} value={formik.values.is_approved} />
     <br />
