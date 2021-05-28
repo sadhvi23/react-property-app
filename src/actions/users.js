@@ -1,5 +1,5 @@
 import {
-    USER_LOGIN, USER_SIGNUP, ADD_USER, LIST_USER, DEACTIVATE_USER, UPDATE_USER
+    USER_LOGIN, USER_SIGNUP, ADD_USER, LIST_USER, DEACTIVATE_USER, UPDATE_USER, DELETE_USER, SHOW_USER
 } from "./types";
 
 import { userService } from "../services/userService";
@@ -91,6 +91,38 @@ export const updateUser = (id, email, name, role ) => async (dispatch) => {
 
     dispatch({
       type: UPDATE_USER,
+      payload: res.data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// Delete User service
+export const deleteUser = ( id ) => async (dispatch) => {
+  try {
+    const res = await userService.deleteUser({id});
+
+    dispatch({
+      type: DELETE_USER,
+      payload: res.data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// Show User service
+export const showUser = (id) => async (dispatch) => {
+  try {
+    const res = await userService.showUser({id});
+
+    dispatch({
+      type: SHOW_USER,
       payload: res.data,
     });
 

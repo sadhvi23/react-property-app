@@ -26,6 +26,7 @@ const Login = (props) => {
           name: data.user.name,
           token: data.token
         });
+        localStorage.setItem('userId', data.user.id)
         localStorage.setItem('currentUserRole', data.role)
         localStorage.setItem("token", data.token)
         props.history.push("/dashboard")

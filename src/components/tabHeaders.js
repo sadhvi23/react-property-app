@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { withRouter } from "react-router-dom";
@@ -10,15 +10,30 @@ import AddProperty from './AddProperty'
 import AddUser from './AddUser'
 import { RouteLayout } from '.././launchComponents/formLayouts/routeLayout'
 import LinkLayout from '.././launchComponents/formLayouts/linkLayout'
-
+import MyProfile from './myProfile'
+import MyProperties from './myProperties'
 
 function TabHeaders(props) {
+
+  const intialValue = {
+    open: false,
+  };
+
+  const [state, setState] = useState(intialValue)
 
   const handleLogout = e => {
     e.preventDefault();
     props.setUser({ ...props.formik.values, email: '', password: '' })
     props.history.push("/login");
   }
+
+  const handleButtonClick = () => {
+    setState((state) => {
+      return {
+        open: !state.open,
+      };
+    });
+  };
 
   return (<Router>
     <div className="App">
@@ -40,7 +55,21 @@ function TabHeaders(props) {
               </div>
             )}
             </ul>
-          </div> 
+          </div>
+          <div>
+            <button type="button" className="button" onClick={handleButtonClick}>☰</button>
+            { state.open ? (
+              <div className="collapse navbar-collapse">
+              <ul>
+                <LinkLayout path="/myProfile" label="MyProfile" />
+                <LinkLayout path="/myProperties" label="MyProperties" />
+              </ul>
+            </div>
+            ) : (
+              null
+            )}
+          </div>
+
           <button onClick={handleLogout}><b>Logout</b></button>
         </div>
       </nav>
@@ -51,7 +80,9 @@ function TabHeaders(props) {
           <RouteLayout path="/properties" class={PropertyList} formik={props.formik}  />
           <RouteLayout path="/addProperty" class={AddProperty} formik={props.formik}  />
           <RouteLayout path="/addUser" class={AddUser} formik={props.formik}  />
-          <RouteLayout path="/dashboard" class={PropertyList} formik={props.formik} />
+          <RouteLayout path="/myProfile" class={MyProfile} formik={props.formik}  />
+          <RouteLayout path="/myProperties" class={MyProperties} formik={props.formik}  />
+          <RouteLayout path="/dashboard" class={UserList} formik={props.formik} />
         </Switch>
       </div>
     </div></Router>

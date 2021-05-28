@@ -24,6 +24,14 @@ const updateUser = (data) => {
   return http.put("/users/"+ data.id, data, { headers: { Authorization: "Bearer " + localStorage.token }});
 };
 
+const deleteUser = (data) => {
+  return http.delete("/users/"+ data.id, { headers: { Authorization: "Bearer " + localStorage.token }});
+};
+
+const showUser = (data) => {
+  return http.get("/users/" + data.id, { headers: { Authorization: "Bearer " + localStorage.token }});
+}
+
 export const userService = {
-  login, signUp, addUser, listUser, deactivateUser, updateUser
+  login, signUp, addUser, listUser, deactivateUser, updateUser, deleteUser, showUser
 };

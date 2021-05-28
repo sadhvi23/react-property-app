@@ -51,7 +51,7 @@ const AddUser = (props) => {
         });
         localStorage.setItem('userId', data.id)
         props.history.push("/users")
-        setUser({...user, name:'', message: data.user.name + " has been added successfully and new user password is " +  randomPassword})
+        setUser({...user, name:'', message: data.user.name + " has been added successfully and new password is " +  randomPassword})
       })
       .catch(e => {
         console.log(e.message);

@@ -6,10 +6,14 @@ const UserItem = props => {
   return (
     <div className="media-left">
       <br />
-    <div><b style={{ textTransform: "capitalize" }}>{user.name}</b></div>
-    <div><b>{user.email}</b></div>
-    <div><b>{user.role}</b></div>
-      <img src="https://i.vippng.com/png/small/159-1591244_user-icon-blue-jpg.png" alt={user.name} />
+    <div><b style={{ textTransform: "capitalize" }}>Name: {user.name}</b></div>
+    <div><b>Email: {user.email}</b></div>
+    { user.role ? (
+      <div><b>Role: {user.role}</b></div>
+    ) : (
+      null
+    )}
+      <img src="https://static.vecteezy.com/system/resources/thumbnails/000/643/326/small/vector60-7909-01.jpg" alt={user.name} />
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import UserItem from "./userItem";
-import { listUser, deactivateUser } from "../actions/users";
+import { listUser, deactivateUser, deleteUser } from "../actions/users";
 import notify from "../helpers/notify";
 import AddUser from "./AddUser"
 
@@ -22,7 +22,6 @@ const UserList = () => {
   if (data.users && data.users.length === 0) {
     dispatch(listUser())
     .then(res => { 
-      // const response = res.map((user) => ({...user, [user.editMode]: true}))
       setData({ users: res, message: "Request has been processed successfully" });
     })
     .catch(e => {
@@ -32,9 +31,17 @@ const UserList = () => {
   }
 
   // Deactivate button click fire API and show message as a toaster
-  const onClick = (user, message) => {
+  const onClickDeactivate = (user) => {
     handleDeactivation(user)
-    notify(message)
+    notify(data.message)
+  }
+
+  // Delete button click fire API and show message as a toaster
+  const onClickDelete = (user) => {
+    handleDelete(user)
+    notify(data.message)
+    // To refresh component
+    window.location.reload(false);
   }
 
   // Deactivate user API
@@ -49,10 +56,30 @@ const UserList = () => {
     });
   }
 
+   // Delete user API
+   const handleDelete = (user) => {
+    dispatch(deleteUser(user.id))
+    .then(res => { 
+      setData({ ...data, message: user.name + " has been deleted successfully" });
+    })
+    .catch(e => {
+      console.log(e.message);
+      setData({...data, message: e.message})
+    });
+  }
+
   // Set edit mode as true and key as item id when click on update button
   const handleUpdate = (u) => {
     setData({...data, editMode: true})
     setUser({...user, key: u.id})
+  }
+
+  const isButtonDisable = () => {
+    if (localStorage.currentUserRole === 'super_admin') {
+      return false
+    } else {
+      return true
+    }
   }
   
   return (
@@ -62,8 +89,9 @@ const UserList = () => {
         data.users.map((u, index) => (
           <div>
             <UserItem user={u} key={u.id} />
-            <button onClick={() => {onClick(u, data.message)}}>Deactivate</button>&nbsp;&nbsp;
-            {u && <button onClick={() => { handleUpdate(u)}}>Edit User</button>}
+            <button onClick={() => {onClickDeactivate(u)}} disabled={isButtonDisable()}>Inactive</button>&nbsp;
+            <button onClick={() => {onClickDelete(u)}} disabled={isButtonDisable()}>Delete</button>&nbsp;
+            {u && <button onClick={() => { handleUpdate(u)}} disabled={isButtonDisable()}>Edit</button>}
             {user.key === u.id && <AddUser editMode={data.editMode} userData={u} />}
             <br /><br />
           </div>
