@@ -50,7 +50,6 @@ function TabHeaders(props) {
               </div>
             ) : (
               <div className="collapse navbar-collapse">
-                <LinkLayout path="/users" label="Users" />
                 <LinkLayout path="/properties" label="Properties" />
               </div>
             )}
