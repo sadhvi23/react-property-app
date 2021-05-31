@@ -5,6 +5,8 @@ import { signUp } from "../actions/users";
 import { Button } from "./formLayouts/buttonLayout"
 import { Input } from "./formLayouts/inputLayout"
 import validateForm from "../helpers/validateForm"
+import errorHandler from "../helpers/errorHandler"
+import notify from "../helpers/notify"
 
 // Signup Function to handle registration
 const SignUp = (props) => {
@@ -18,6 +20,7 @@ const SignUp = (props) => {
     const { email, name, password } = props.formik.values;
     dispatch(signUp(email, password, name))
       .then(data => { 
+        errorHandler(data)
         props.setUser({
           ...props.formik.values,
           id: data.user.id,
@@ -34,6 +37,7 @@ const SignUp = (props) => {
       })
       .catch(e => {
         console.log(e.message);
+        notify(e.message)
         props.setUser({...props.formik.values, message: e.message})
       });
   };

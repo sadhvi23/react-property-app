@@ -5,6 +5,8 @@ import { login } from "../actions/users";
 import { Button } from "./formLayouts/buttonLayout"
 import { Input } from "./formLayouts/inputLayout"
 import validateForm from "../helpers/validateForm"
+import errorHandler from "../helpers/errorHandler"
+import notify from "../helpers/notify"
 
 // Handle login page
 const Login = (props) => {
@@ -18,6 +20,7 @@ const Login = (props) => {
     const { email, name, password } = props.formik.values;
     dispatch(login(email, password, name))
       .then(data => { 
+        errorHandler(data)
         props.setUser({
           ...props.formik.values,
           id: data.user.id,
@@ -33,7 +36,7 @@ const Login = (props) => {
         props.setUser({...props.formik.values, email: '', name: '', password: '', message: "Request has been processed successfully" })
       })
       .catch(e => {
-        console.log(e.message);
+        notify(e.message)
         props.setUser({...props.formik.values, message: e.message})
       });
   };
