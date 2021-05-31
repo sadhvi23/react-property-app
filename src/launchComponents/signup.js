@@ -27,6 +27,8 @@ const SignUp = (props) => {
           token: data.token
         });
         localStorage.setItem('userId', data.user.id)
+        localStorage.setItem("token", data.token)
+        localStorage.setItem('currentUserRole', data.role)
         props.history.push("/dashboard")
         props.setUser({...props.formik.values, email: '', name: '', password: '', message: "Request has been processed successfully" })
       })
