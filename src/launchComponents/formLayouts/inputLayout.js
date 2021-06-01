@@ -3,7 +3,7 @@ export const Input = (props) => {
     <div className={props.divClass}>
       <label>{props.label}</label>
       <input type={props.type} name={props.name} className={props.class} placeholder=
-      {props.placeholder} value={props.value} onChange={props.handleChange}/>
+      {props.placeholder} defaultValue={props.defaultValue} onChange={props.handleChange} checked={props.checked} />
       <br />
     </div>
   );

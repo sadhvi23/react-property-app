@@ -6,8 +6,7 @@ import { useFormik } from 'formik';
 import Login from './login'
 import SignUp from './signup'
 import { RouteLayout } from "./formLayouts/routeLayout"
-import LinkLayout from "./formLayouts/linkLayout"
-import TabHeaders from "../components/tabHeaders"
+import Dashboard from "../components/dashboard"
 
 const Launch = () => {
 
@@ -22,9 +21,7 @@ const Launch = () => {
       formValid: false,
       message: "",
       className: ""
-    },
-    onSubmit: values => {
-    },
+    }
   });
 
   const [user, setUser] = useState(formik.values);
@@ -33,24 +30,21 @@ const Launch = () => {
     <div className="App">
       <nav className="navbar navbar-expand-lg navbar-light fixed-top">
         <div className="container">
-          <LinkLayout path="/sign-in" label="AjackusProperty" />
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul className="navbar-nav ml-auto">
-              <LinkLayout path="/sign-in" label="Sign in" />
-              <LinkLayout path="/sign-up" label="Sign up" />
-            </ul>
-          </div> 
+          <h3>Property APP</h3>
         </div>
       </nav>
 
       <div className="outer">
         <div className="inner">
           <Switch>
-            <RouteLayout path="/sign-up" class={SignUp} setUser={setUser} formik={formik} />
+            <RouteLayout path="/panel/sign-up" class={SignUp} setUser={setUser} formik={formik} />
             {user == null ? (
-              <RouteLayout path="/sign-in" class={Login} setUser={setUser} formik={formik}  />
+              <div>
+                <RouteLayout path="/panel/sign-in" class={Login} setUser={setUser} formik={formik}  />
+                <RouteLayout path="/user/sign-in" class={Login} setUser={setUser} formik={formik}  />
+              </div>
             ) : (
-              <RouteLayout path="/dashboard" class={TabHeaders} setUser={setUser} formik={formik}/>
+              <RouteLayout path="/dashboard" class={Dashboard} setUser={setUser} formik={formik}/>
             )}
             <RouteLayout path="/" class={Login} setUser={setUser} formik={formik} />
           </Switch>
