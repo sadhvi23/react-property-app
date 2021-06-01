@@ -5,7 +5,6 @@ import { useFormik } from 'formik';
 
 import Login from './login'
 import SignUp from './signup'
-import { ToasterMessage } from "./formLayouts/toasterMessage"
 import { RouteLayout } from "./formLayouts/routeLayout"
 import LinkLayout from "./formLayouts/linkLayout"
 import TabHeaders from "../components/tabHeaders"
@@ -41,7 +40,6 @@ const Launch = () => {
               <LinkLayout path="/sign-up" label="Sign up" />
             </ul>
           </div> 
-          <ToasterMessage message={user.message} />
         </div>
       </nav>
 
