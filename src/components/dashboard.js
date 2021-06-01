@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import "./tabHeaders.css"
 
 import PropertyList from './propertyList'
 import UserList from './userList'
@@ -13,7 +12,7 @@ import LinkLayout from '.././launchComponents/formLayouts/linkLayout'
 import MyProfile from './myProfile'
 import MyProperties from './myProperties'
 
-function TabHeaders(props) {
+function Dashboard(props) {
 
   const intialValue = {
     open: false,
@@ -24,7 +23,7 @@ function TabHeaders(props) {
   const handleLogout = e => {
     e.preventDefault();
     props.setUser({ ...props.formik.values, email: '', password: '' })
-    props.history.push("/login");
+    props.history.push("/");
   }
 
   const handleButtonClick = () => {
@@ -41,18 +40,24 @@ function TabHeaders(props) {
         <div className="container">
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav ml-auto">
-            { localStorage.currentUserRole === 'super_admin' ? (
+            { localStorage.currentUserRole === 'super_admin' &&
               <div className="collapse navbar-collapse">
-              <LinkLayout path="/users" label="Users" />
-              <LinkLayout path="/properties" label="Properties" />
-              <LinkLayout path="/addProperty" label="AddProperty" />
-              <LinkLayout path="/addUser" label="AddUser" />
+              <LinkLayout path="/panel/users" label="Users" />
+              <LinkLayout path="/panel/properties" label="Properties" />
+              {/* <LinkLayout path="/panel/addProperty" label="AddProperty" /> */}
+              {/* <LinkLayout path="/panel/addUser" label="AddUser" /> */}
               </div>
-            ) : (
+            } 
+            { localStorage.currentUserRole === 'admin' &&
               <div className="collapse navbar-collapse">
-                <LinkLayout path="/properties" label="Properties" />
+                <LinkLayout path="/panel/properties" label="Properties" />
               </div>
-            )}
+            }
+            { localStorage.currentUserRole === 'user' &&
+              <div className="collapse navbar-collapse">
+                <LinkLayout path="/user/properties" label="Properties" />
+              </div>
+            }
             </ul>
           </div>
           <div>
@@ -61,31 +66,35 @@ function TabHeaders(props) {
               <div className="collapse navbar-collapse">
               <ul>
                 <LinkLayout path="/myProfile" label="MyProfile" />
-                <LinkLayout path="/myProperties" label="MyProperties" />
+                { 
+                  localStorage.currentUserRole === 'user' && <LinkLayout path="/user/myProperties" label="MyProperties" />
+                }
               </ul>
             </div>
             ) : (
               null
             )}
           </div>
-
           <button onClick={handleLogout}><b>Logout</b></button>
         </div>
       </nav>
 
       <div className="outer">
         <Switch>
-          <RouteLayout path="/users" class={UserList} formik={props.formik} />
-          <RouteLayout path="/properties" class={PropertyList} formik={props.formik}  />
-          <RouteLayout path="/addProperty" class={AddProperty} formik={props.formik}  />
-          <RouteLayout path="/addUser" class={AddUser} formik={props.formik}  />
+          <RouteLayout path="/panel/users" class={UserList} formik={props.formik} />
+          <RouteLayout path="/panel/properties" class={PropertyList} formik={props.formik}  />
+          <RouteLayout path="/panel/addProperty" class={AddProperty} formik={props.formik}  />
+          <RouteLayout path="/panel/updateProperty" class={AddProperty} formik={props.formik}  />
+          <RouteLayout path="/panel/addUser" class={AddUser} formik={props.formik}  />
+          <RouteLayout path="/panel/updateUser" class={AddUser} formik={props.formik}  />
           <RouteLayout path="/myProfile" class={MyProfile} formik={props.formik}  />
-          <RouteLayout path="/myProperties" class={MyProperties} formik={props.formik}  />
-          <RouteLayout path="/dashboard" class={UserList} formik={props.formik} />
+          <RouteLayout path="/user/properties" class={PropertyList} formik={props.formik}  />
+          <RouteLayout path="/user/myProperties" class={MyProperties} formik={props.formik}  />
+          <RouteLayout path="/dashboard" class={PropertyList} formik={props.formik} />
         </Switch>
       </div>
     </div></Router>
   );
 }
   
-  export default withRouter(TabHeaders);
+  export default withRouter(Dashboard);
