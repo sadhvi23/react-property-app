@@ -32,8 +32,12 @@ const MyProperties = () => {
   return http.get("/properties/me", { headers: { Authorization: "Bearer " + localStorage.token } });
 };
 
+const showProperty = (data) => {
+  return http.get("/properties/" + data.id, { headers: { Authorization: "Bearer " + localStorage.token } });
+};
+
 
 export const propertyService = {
     addProperty, listProperty, deactivateProperty, updateProperty, deleteProperty, buyProperty, 
-    addOwner, MyProperties
+    addOwner, MyProperties, showProperty
 };
