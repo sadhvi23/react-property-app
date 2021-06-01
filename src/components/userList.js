@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { withRouter } from 'react-router-dom';
 
 import UserItem from "./userItem";
 import { listUser, deactivateUser, deleteUser } from "../actions/users";
 import notify from "../helpers/notify";
-import AddUser from "./AddUser"
 
-const UserList = () => {
+const UserList = (props) => {
 
   const dispatch = useDispatch();
 
@@ -16,7 +16,6 @@ const UserList = () => {
     editMode: false
   }
   const [data, setData] = useState(intialValues);
-  const [user, setUser] = useState({key: 0});
 
   // List User API
   if (data.users && data.users.length === 0) {
@@ -68,31 +67,28 @@ const UserList = () => {
     });
   }
 
-  // Set edit mode as true and key as item id when click on update button
-  const handleUpdate = (u) => {
-    setData({...data, editMode: true})
-    setUser({...user, key: u.id})
+  const isButtonDisable = () => {
+    return !(localStorage.currentUserRole === 'super_admin')
   }
 
-  const isButtonDisable = () => {
-    if (localStorage.currentUserRole === 'super_admin') {
-      return false
-    } else {
-      return true
-    }
+  const onClickAddUser = () => {
+    props.history.push("/panel/addUser")
+  }
+
+  const onClickUpdateUser = (u) => {
+    props.history.push("/panel/updateUser", u)
   }
   
   return (
-    <div >
+    <div className="outer">
       <h4 className="title">Users</h4>
       {data.users && data.users.length ? (
         data.users.map((u, index) => (
           <div>
             <UserItem user={u} key={u.id} />
-            <button onClick={() => {onClickDeactivate(u)}} disabled={isButtonDisable()}>Inactive</button>&nbsp;
+            <button onClick={() => {onClickDeactivate(u)}} disabled={isButtonDisable()}>Deactivate</button>&nbsp;
             <button onClick={() => {onClickDelete(u)}} disabled={isButtonDisable()}>Delete</button>&nbsp;
-            {u && <button onClick={() => { handleUpdate(u)}} disabled={isButtonDisable()}>Edit</button>}
-            {user.key === u.id && <AddUser editMode={data.editMode} userData={u} />}
+            {u && <button onClick={() => onClickUpdateUser(u)} disabled={isButtonDisable()}>Edit</button>}
             <br /><br />
           </div>
         ))
@@ -103,8 +99,10 @@ const UserList = () => {
           </span>
         </div>
       )}
+      {!isButtonDisable() &&
+      <button children = "Add new user" onClick={onClickAddUser} />}
     </div>
   );
 };
 
-export default UserList;
+export default withRouter(UserList);
