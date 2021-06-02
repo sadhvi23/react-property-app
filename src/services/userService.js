@@ -32,6 +32,10 @@ const showUser = (data) => {
   return http.get("/users/" + data.id, { headers: { Authorization: "Bearer " + localStorage.token }});
 }
 
+const logoutUser = (data) => {
+  return http.put("/users/"+ data.id + "/logout", data, { headers: { Authorization: "Bearer " + localStorage.token }});
+};
+
 export const userService = {
-  login, signUp, addUser, listUser, deactivateUser, updateUser, deleteUser, showUser
+  login, signUp, addUser, listUser, deactivateUser, updateUser, deleteUser, showUser, logoutUser
 };

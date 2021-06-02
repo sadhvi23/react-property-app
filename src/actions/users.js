@@ -1,5 +1,6 @@
 import {
-    USER_LOGIN, USER_SIGNUP, ADD_USER, LIST_USER, DEACTIVATE_USER, UPDATE_USER, DELETE_USER, SHOW_USER
+    USER_LOGIN, USER_SIGNUP, ADD_USER, LIST_USER, DEACTIVATE_USER, UPDATE_USER, DELETE_USER, 
+    SHOW_USER, LOGOUT_USER
 } from "./types";
 
 import { userService } from "../services/userService";
@@ -123,6 +124,22 @@ export const showUser = (id) => async (dispatch) => {
 
     dispatch({
       type: SHOW_USER,
+      payload: res.data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// Logout User service
+export const logoutUser = (id ) => async (dispatch) => {
+  try {
+    const res = await userService.logoutUser({id});
+
+    dispatch({
+      type: LOGOUT_USER,
       payload: res.data,
     });
 
