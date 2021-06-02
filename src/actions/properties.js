@@ -1,14 +1,14 @@
 import {
     ADD_PROPERTY, LIST_PROPERTY, DEACTIVATE_PROPERTY, UPDATE_PROPERTY, DELETE_PROPERTY, BUY_PROPERTY, 
-    ADD_OWNER, MY_PROPERTIES
+    ADD_OWNER, MY_PROPERTIES, SHOW_PROPERTY
 } from "./types";
 
 import { propertyService } from "../services/propertyService";
 
 // Property Create service
-export const addProperty = (name, is_approved, is_available) => async (dispatch) => {
+export const addProperty = (name, is_approved, is_available, owner_id) => async (dispatch) => {
   try {
-    const res = await propertyService.addProperty({ name, is_approved, is_available });
+    const res = await propertyService.addProperty({ name, is_approved, is_available, owner_id});
 
     dispatch({
       type: ADD_PROPERTY,
@@ -54,9 +54,9 @@ export const deactivateProperty = (id) => async (dispatch) => {
 };
 
 // Update Property service
-export const updateProperty = (id, name, is_available, is_approved ) => async (dispatch) => {
+export const updateProperty = (id, name, is_available, is_approved, owner_id ) => async (dispatch) => {
   try {
-    const res = await propertyService.updateProperty({id, name, is_available, is_approved});
+    const res = await propertyService.updateProperty({id, name, is_available, is_approved, owner_id});
 
     dispatch({
       type: UPDATE_PROPERTY,
@@ -124,6 +124,22 @@ export const myProperties = () => async (dispatch) => {
 
     dispatch({
       type: MY_PROPERTIES,
+      payload: res.data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// Show Property service
+export const showProperty = (id) => async (dispatch) => {
+  try {
+    const res = await propertyService.showProperty({id});
+
+    dispatch({
+      type: SHOW_PROPERTY,
       payload: res.data,
     });
 

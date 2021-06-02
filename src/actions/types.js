@@ -14,3 +14,4 @@ export const DELETE_PROPERTY = "DELETE_PROPERTY";
 export const BUY_PROPERTY = "BUY_PROPERTY";
 export const ADD_OWNER = "ADD_OWNER"
 export const MY_PROPERTIES = "MY_PROPERTIES"
+export const SHOW_PROPERTY = "SHOW_PROPERTY"
