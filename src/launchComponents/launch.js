@@ -28,7 +28,7 @@ const Launch = () => {
  
   return (<Router>
     <div className="App">
-      <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+      <nav className="navbar navbar-expand-lg navbar-light">
         <div className="container">
           <h3>Property APP</h3>
         </div>

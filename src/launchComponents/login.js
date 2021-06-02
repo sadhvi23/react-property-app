@@ -12,6 +12,10 @@ import notify from "../helpers/notify"
 const Login = (props) => {
   const dispatch = useDispatch();
   const location = useLocation();
+
+  if (localStorage.token) {
+    props.history.push("/dashboard")
+  }
   
   // Store details and use services
   const saveUser = async e => {
@@ -21,6 +25,14 @@ const Login = (props) => {
     const { email, name, password } = props.formik.values;
     dispatch(login(email, password, name))
       .then(data => { 
+        // Block sign-in for user to panel
+        if (data.role === 'user' && (location.pathname === '/' || location.pathname === "/panel/sign-in")) {
+          data = { status: 'error', message: "User can't have permission to login into admin panel" }
+        }
+        // Block sign-in for admin to user App
+        if ((data.role === 'super_admin' || data.role === 'admin') && location.pathname === '/user/sign-in') {
+          data = { status: 'error', message: "Admin can't have permission to login into user App" }
+        }
         errorHandler(data)
         props.setUser({
           ...props.formik.values,
