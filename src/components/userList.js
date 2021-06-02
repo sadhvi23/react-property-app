@@ -40,7 +40,7 @@ const UserList = (props) => {
     handleDelete(user)
     notify(data.message)
     // To refresh component
-    window.location.reload(false);
+    window.location.reload(true);
   }
 
   // Deactivate user API
@@ -67,14 +67,17 @@ const UserList = (props) => {
     });
   }
 
+  // Button enable for only super admin role
   const isButtonDisable = () => {
     return !(localStorage.currentUserRole === 'super_admin')
   }
 
+  // Add user button redirect to add user page
   const onClickAddUser = () => {
     props.history.push("/panel/addUser")
   }
 
+  // Update user button redirect to update user page
   const onClickUpdateUser = (u) => {
     props.history.push("/panel/updateUser", u)
   }

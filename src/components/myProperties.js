@@ -14,6 +14,7 @@ const MyProperties = () => {
   }
   const [data, setData] = useState(intialValues);
 
+  // Show logged in user profile
   if (data.properties.length === 0) {
     dispatch(myProperties())
     .then(res => { 
@@ -25,7 +26,6 @@ const MyProperties = () => {
     });
   }
 
-  
   return (
     <div >
       <h4 className="title">My Properties</h4>
