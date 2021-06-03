@@ -67,3 +67,13 @@ body, html, .App, #root, .outer {
 .custom-control-label {
   font-weight: 400;
 }
+
+.error {
+  color: red;
+}
+
+.status-label {
+  color: black;
+  background-color:lightskyblue;
+  line-height: 2;
+}

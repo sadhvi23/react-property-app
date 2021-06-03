@@ -33,6 +33,8 @@ const UserList = (props) => {
   const onClickDeactivate = (user) => {
     handleDeactivation(user)
     notify(data.message)
+    // To refresh component
+    window.location.reload();
   }
 
   // Delete button click fire API and show message as a toaster
@@ -47,7 +49,11 @@ const UserList = (props) => {
   const handleDeactivation = (user) => {
     dispatch(deactivateUser(user.id))
     .then(res => { 
-      setData({ ...data, message: user.name + " has been deactivated successfully" });
+      if (res.is_active) {
+        setData({ ...data, message: user.name + " has been activated successfully" });
+      } else {
+        setData({ ...data, message: user.name + " has been deactivated successfully" });
+      }
     })
     .catch(e => {
       console.log(e.message);
@@ -89,7 +95,7 @@ const UserList = (props) => {
         data.users.map((u, index) => (
           <div>
             <UserItem user={u} key={u.id} />
-            <button onClick={() => {onClickDeactivate(u)}} disabled={isButtonDisable()}>Deactivate</button>&nbsp;
+            <button onClick={() => {onClickDeactivate(u)}} disabled={isButtonDisable()}>{u.is_active ? "Deactivate": "Activate"}</button>&nbsp;
             <button onClick={() => {onClickDelete(u)}} disabled={isButtonDisable()}>Delete</button>&nbsp;
             {u && <button onClick={() => onClickUpdateUser(u)} disabled={isButtonDisable()}>Edit</button>}
             <br /><br />
@@ -98,11 +104,11 @@ const UserList = (props) => {
       ) : (
         <div >
           <span>
-            No users found!
+            .....Loading!!!
           </span>
         </div>
       )}
-      {!isButtonDisable() &&
+      {data.users.length && !isButtonDisable() &&
       <button children = "Add new user" onClick={onClickAddUser} />}
     </div>
   );
