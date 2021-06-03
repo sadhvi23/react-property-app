@@ -7,6 +7,8 @@ import { Button } from "../launchComponents/formLayouts/buttonLayout"
 import { Input } from "../launchComponents/formLayouts/inputLayout"
 import { addProperty, updateProperty, showProperty } from "../actions/properties";
 import { listUser } from "../actions/users"
+import errorHandler from "../helpers/errorHandler"
+import notify from "../helpers/notify";
 
 const AddProperty = (props) => {
 
@@ -30,7 +32,6 @@ const AddProperty = (props) => {
   const getProperty = (propertyId) => {
     dispatch(showProperty(propertyId))
     .then(res => { 
-      console.log("----", res)
       setProperty({ 
         ...property, 
         id: res.property.id,
@@ -43,7 +44,8 @@ const AddProperty = (props) => {
     })
     .catch(e => {
       console.log(e.message);
-      setProperty({...property, message: e.message})
+      notify(e.message)
+      setProperty({...property, message: ""})
     });
   }
 
@@ -82,10 +84,10 @@ const AddProperty = (props) => {
   // Add Property if edit mode is false
   const add = () => {
     const { name, is_approved, is_available, owner_id } = property;
-    console.log("===", property, formik.values)
     if (name) {
       dispatch(addProperty(name, is_approved, is_available, owner_id))
       .then(data => { 
+        errorHandler(data)
         setProperty({
           ...property,
           id: data.id,
@@ -99,7 +101,8 @@ const AddProperty = (props) => {
       })
       .catch(e => {
         console.log(e.message);
-        setProperty({...property, message: e.message})
+        notify(e.message)
+        setProperty({...property, message: ""})
       });
     }
   }
@@ -110,6 +113,7 @@ const AddProperty = (props) => {
     if (name) {
       dispatch(updateProperty(propertyData.id, name, is_approved, is_available, owner_id))
       .then(data => { 
+        errorHandler(data)
         setProperty({
           ...property,
           id: data.id,
@@ -124,7 +128,8 @@ const AddProperty = (props) => {
       })
       .catch(e => {
         console.log(e.message);
-        setProperty({...property, message: e.message})
+        notify(e.message)
+        setProperty({...property, message: ""})
       });
     }
   }
@@ -162,13 +167,13 @@ const AddProperty = (props) => {
     { editMode() ? (<h3>Update Property</h3>) : (<h3>Add Property</h3>)}
 
     <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
-    "Enter name" defaultValue={property.name} handleChange={formik.handleChange}/>
+    "Enter name" defaultValue={property.name} handleChange={formik.handleChange} required={true}/>
 
     { editMode() ? (
       <div>
         <label divClass="form-group">
           Owner&nbsp;&nbsp;&nbsp; 
-          <select name="role" value={property.owner_email} onChange={onSelect} onClick={getUsers}>
+          <select name="role" value={property.owner_email} onChange={onSelect} onClick={getUsers} required>
           <option>select owner...</option>
           {property.users && property.users.length ? (
             property.users.map((u, index) => (
@@ -201,7 +206,7 @@ const AddProperty = (props) => {
       <div>
         <label divClass="form-group">
           Owner&nbsp;&nbsp;&nbsp; 
-          <select name="role" onChange={onSelect} onClick={getUsers}>
+          <select name="role" onChange={onSelect} onClick={getUsers} required>
           <option>select owner...</option>
           {property.users && property.users.length ? (
             property.users.map((u, index) => (

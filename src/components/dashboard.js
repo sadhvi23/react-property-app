@@ -29,7 +29,7 @@ function Dashboard(props) {
     if (localStorage.currentUserRole === "user") {
       props.history.push("/user/sign-in")
     } else {
-      props.history.push("/")
+      props.history.push("/panel/sign-in")
     }   
   }
 
@@ -41,7 +41,7 @@ function Dashboard(props) {
     .then(res => { 
       props.setUser({ ...props.formik.values, email: '', password: '' })
       localStorage.setItem("token", "")
-      props.history.push("/");
+      props.history.push(props.location.pathname);
     })
     .catch(e => {
       console.log(e.message);
@@ -66,17 +66,17 @@ function Dashboard(props) {
             { localStorage.currentUserRole === 'super_admin' &&
               <div className="collapse navbar-collapse">
               <LinkLayout path="/panel/users" label="Users" />
-              <LinkLayout path="/panel/properties" label="Properties" />
+              <LinkLayout path="/properties" label="Properties" />
               </div>
             } 
             { localStorage.currentUserRole === 'admin' &&
               <div className="collapse navbar-collapse">
-                <LinkLayout path="/panel/properties" label="Properties" />
+                <LinkLayout path="/properties" label="Properties" />
               </div>
             }
             { localStorage.currentUserRole === 'user' &&
               <div className="collapse navbar-collapse">
-                <LinkLayout path="/user/properties" label="Properties" />
+                <LinkLayout path="/properties" label="Properties" />
               </div>
             }
             </ul>
@@ -86,7 +86,7 @@ function Dashboard(props) {
             { state.open ? (
               <div className="collapse navbar-collapse">
               <ul>
-                <LinkLayout path="/myProfile" label="MyProfile" />
+                <LinkLayout path="/myprofile" label="MyProfile" />
                 { 
                   localStorage.currentUserRole === 'user' && <LinkLayout path="/user/myProperties" label="MyProperties" />
                 }
@@ -103,15 +103,13 @@ function Dashboard(props) {
       <div className="outer">
         <Switch>
           <RouteLayout path="/panel/users" class={UserList} formik={props.formik} />
-          <RouteLayout path="/panel/properties" class={PropertyList} formik={props.formik}  />
+          <RouteLayout path="/properties" class={PropertyList} formik={props.formik}  />
           <RouteLayout path="/panel/addProperty" class={AddProperty} formik={props.formik}  />
           <RouteLayout path="/panel/updateProperty" class={AddProperty} formik={props.formik}  />
           <RouteLayout path="/panel/addUser" class={AddUser} formik={props.formik}  />
           <RouteLayout path="/panel/updateUser" class={AddUser} formik={props.formik}  />
-          <RouteLayout path="/myProfile" class={MyProfile} formik={props.formik}  />
-          <RouteLayout path="/user/properties" class={PropertyList} formik={props.formik}  />
+          <RouteLayout path="/myprofile" class={MyProfile} formik={props.formik}  />
           <RouteLayout path="/user/myProperties" class={MyProperties} formik={props.formik}  />
-          <RouteLayout path="/dashboard" class={PropertyList} formik={props.formik} />
         </Switch>
       </div>
     </div></Router>
