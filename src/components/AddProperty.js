@@ -47,10 +47,12 @@ const AddProperty = (props) => {
     });
   }
 
+  // If update is clicked
   const editMode = () => {
     return (props.location.pathname === "/panel/updateProperty")
   }
 
+  // Get data if update clicked
   if (editMode() && property.name === "") {
     getProperty(props.location.state.id)
   }
@@ -139,6 +141,15 @@ const AddProperty = (props) => {
     });
   }
 
+  // Uncheck if already checked otherwise checked
+  const onClickUncheck = (e) => {
+    if (property[e.target.value]) {
+      setProperty({...property, [e.target.value]: false })
+    } else {
+      setProperty({...property, [e.target.value]: true })
+    }
+  }
+
   // Get owner selected value
   const onSelect = (e) => {
     const selectedIndex = e.target.options.selectedIndex;
@@ -172,14 +183,14 @@ const AddProperty = (props) => {
         <br /><br />
         <div className="checkbox">
           <label>
-            <input type="checkbox" checked={property.is_approved} value="is_approved" onChange={handleOptionChange} />
+            <input type="checkbox" onClick={onClickUncheck} checked={property.is_approved || null} value="is_approved" onChange={handleOptionChange} />
             &nbsp;&nbsp;IsApproved
           </label>
         </div>
         <br />
         <div className="checkbox">
           <label>
-            <input type="checkbox" checked={property.is_available} value="is_available" onChange={handleOptionChange} />
+            <input type="checkbox" onClick={onClickUncheck} checked={property.is_available || null} value="is_available" onChange={handleOptionChange} />
             &nbsp;&nbsp;IsAvailable
           </label>
         </div>

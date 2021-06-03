@@ -1,5 +1,3 @@
-import React from 'react';
-
 const FormErrors = ({formErrors}) =>
   <div>
     {Object.keys(formErrors).map((fieldName, i) => {

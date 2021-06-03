@@ -37,7 +37,7 @@ body, html, .App, #root, .outer {
 
 .outer {
   display: flex;
-  justify-content: center;
+  justify-content: right;
   flex-direction: column;
   text-align: left;
 }

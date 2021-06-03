@@ -1,6 +1,6 @@
 import {
     ADD_PROPERTY, LIST_PROPERTY, DEACTIVATE_PROPERTY, UPDATE_PROPERTY, DELETE_PROPERTY, BUY_PROPERTY, 
-    ADD_OWNER, MY_PROPERTIES, SHOW_PROPERTY
+    ADD_OWNER, MY_PROPERTIES, SHOW_PROPERTY, UPDATE_APPROVAL_STATUS
 } from "./types";
 
 import { propertyService } from "../services/propertyService";
@@ -140,6 +140,22 @@ export const showProperty = (id) => async (dispatch) => {
 
     dispatch({
       type: SHOW_PROPERTY,
+      payload: res.data,
+    });
+
+    return Promise.resolve(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+// Update approval status Property service
+export const UpdateApprovalStatus = ( id, is_approved ) => async (dispatch) => {
+  try {
+    const res = await propertyService.updateApprovalStatus({id, is_approved});
+
+    dispatch({
+      type: UPDATE_APPROVAL_STATUS,
       payload: res.data,
     });
 

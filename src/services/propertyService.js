@@ -36,8 +36,12 @@ const showProperty = (data) => {
   return http.get("/properties/" + data.id, { headers: { Authorization: "Bearer " + localStorage.token } });
 };
 
+const updateApprovalStatus = (data) => {
+  return http.put("/properties/"+ data.id + "/approval_status", data, { headers: { Authorization: "Bearer " + localStorage.token }});
+};
+
 
 export const propertyService = {
     addProperty, listProperty, deactivateProperty, updateProperty, deleteProperty, buyProperty, 
-    addOwner, MyProperties, showProperty
+    addOwner, MyProperties, showProperty, updateApprovalStatus
 };

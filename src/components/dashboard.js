@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import PropertyList from './propertyList'
 import UserList from './userList'
@@ -11,8 +12,11 @@ import { RouteLayout } from '.././launchComponents/formLayouts/routeLayout'
 import LinkLayout from '.././launchComponents/formLayouts/linkLayout'
 import MyProfile from './myProfile'
 import MyProperties from './myProperties'
+import { logoutUser } from "../actions/users"
 
 function Dashboard(props) {
+
+  const dispatch = useDispatch();
 
   const intialValue = {
     open: false,
@@ -20,12 +24,31 @@ function Dashboard(props) {
 
   const [state, setState] = useState(intialValue)
 
-  const handleLogout = e => {
-    e.preventDefault();
-    props.setUser({ ...props.formik.values, email: '', password: '' })
-    props.history.push("/");
+  // Handle session when use is already sign in
+  if (!localStorage.token) {
+    if (localStorage.currentUserRole === "user") {
+      props.history.push("/user/sign-in")
+    } else {
+      props.history.push("/")
+    }   
   }
 
+  // Handle logout action
+  const handleLogout = e => {
+    e.preventDefault();
+    console.log("Logout :: ", localStorage)
+    dispatch(logoutUser(localStorage.userId))
+    .then(res => { 
+      props.setUser({ ...props.formik.values, email: '', password: '' })
+      localStorage.setItem("token", "")
+      props.history.push("/");
+    })
+    .catch(e => {
+      console.log(e.message);
+    });
+  }
+
+  // Handle profile button click
   const handleButtonClick = () => {
     setState((state) => {
       return {
@@ -44,8 +67,6 @@ function Dashboard(props) {
               <div className="collapse navbar-collapse">
               <LinkLayout path="/panel/users" label="Users" />
               <LinkLayout path="/panel/properties" label="Properties" />
-              {/* <LinkLayout path="/panel/addProperty" label="AddProperty" /> */}
-              {/* <LinkLayout path="/panel/addUser" label="AddUser" /> */}
               </div>
             } 
             { localStorage.currentUserRole === 'admin' &&
@@ -97,4 +118,4 @@ function Dashboard(props) {
   );
 }
   
-  export default withRouter(Dashboard);
+export default withRouter(Dashboard);
