@@ -33,33 +33,42 @@ const PropertyList = (props) => {
   const onClickDeactivate = (property) => {
     handleDeactivation(property)
     notify(data.message)
+    window.location.reload();
   }
 
   // Delete button click fire API and show message as a toaster
   const onClickDelete = (property) => {
     handleDelete(property)
     notify(data.message)
+    setData({...data, message: ""})
     // To refresh component
-    window.location.reload(true);
+    window.location.reload();
+    
   }
 
   // Buy button click fire API and show message as a toaster
   const onClickBuy = (property) => {
     handleBuy(property)
     notify(data.message)
+    setData({...data, message: ""})
+    // To refresh component
+    window.location.reload();
   }
 
   // Approve/Reject button click fire API and show message as a toaster
   const onClickUpdateApprovalStatus = (property, is_approved) => {
     handleApprovalStatus(property, is_approved)
     notify(data.message)
+    setData({...data, message: ""})
+    // To refresh component
+    window.location.reload();
   }
 
   // Deactivate property API
   const handleDeactivation = (property) => {
     dispatch(deactivateProperty(property.id))
     .then(res => { 
-      setData({ ...data, message: property.name + " has been deactivated successfully" });
+      setData({ ...data, message: property.name + " activation status has been updated successfully" });
     })
     .catch(e => {
       console.log(e.message);
@@ -135,24 +144,24 @@ const PropertyList = (props) => {
         data.properties.map((p, index) => (
           <div>
             <PropertyItem property={p} key={index}/>
-            { isButtonDisable() && <button onClick={() => {onClickDeactivate(p)}}>Deactivate</button> }&nbsp;&nbsp;
+            { isButtonDisable() && <button onClick={() => {onClickDeactivate(p)}}>{p.is_active ? "Deactivate" : "Activate"}</button> }&nbsp;&nbsp;
             { isButtonDisable() && <button onClick={() => {onClickDelete(p)}}>Delete</button> }&nbsp;
             { isBuyButtonDisable() && <button children = "buy property" onClick={() => {onClickBuy(p)}} />}&nbsp;
             { isButtonDisable() && p && <button onClick={() => { onClickUpdateProperty(p)}}>Edit</button>}&nbsp;
             <br />
-            { isApprovalButtonEnable() && <button children = "Approve" onClick={() => onClickUpdateApprovalStatus(p, true)} /> }&nbsp;&nbsp;
-            { isApprovalButtonEnable() && <button children = "Reject" onClick={() => onClickUpdateApprovalStatus(p, false)} /> }&nbsp;
+            { isApprovalButtonEnable() && <button children = "Approve" disabled={p.is_approved} onClick={() => onClickUpdateApprovalStatus(p, true)} /> }&nbsp;&nbsp;
+            { isApprovalButtonEnable() && <button children = "Reject" disabled={!p.is_approved} onClick={() => onClickUpdateApprovalStatus(p, false)} /> }&nbsp;
             <br /><br />
           </div>
         ))
       ) : (
         <div >
           <span>
-            No properties found!
+            .....Loading!!!
           </span>
         </div>
       )}
-      { isButtonDisable() &&
+      { data.properties.length && isButtonDisable() &&
         <button children = "Add new property" onClick={onClickAddProperty} /> 
       }
     </div>

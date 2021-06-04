@@ -7,6 +7,9 @@ import { Button } from "../launchComponents/formLayouts/buttonLayout"
 import { Input } from "../launchComponents/formLayouts/inputLayout"
 import { addUser, updateUser, showUser } from "../actions/users";
 import notify from "../helpers/notify";
+import FormErrors from "../helpers/formErrors"
+import validateUserForm from "../helpers/validateUserForm"
+import errorHandler from "../helpers/errorHandler"
 
 const AddUser = (props) => {
 
@@ -16,7 +19,9 @@ const AddUser = (props) => {
     initialValues: {
       name: "",
       email: "",
-      role: ""
+      role: "",
+      formErrors: {name: "", email: "", role: ""},
+      formValid: ""
     }
   });
 
@@ -52,9 +57,11 @@ const AddUser = (props) => {
     if (props.location.pathname === "/panel/updateUser") {
       update(props.location.state)
     } else {
-      add()
+      validateUserForm(user, setUser, e.target)
+      if (user.formValid) {
+        add()
+      }
     }
-    notify(user.message)
   };
 
   // Add user
@@ -64,6 +71,7 @@ const AddUser = (props) => {
     if (name) {
       dispatch(addUser(email, randomPassword, name, role))
       .then(data => { 
+        errorHandler(data)
         setUser({
           ...formik.values,
           id: data.user.id,
@@ -72,13 +80,14 @@ const AddUser = (props) => {
           password: data.user.password,
           role: data.role
         });
-        localStorage.setItem('userId', data.id)
         props.history.push("/panel/users")
         setUser({...user, name:'', message: data.user.name + " has been added successfully and new password is " +  randomPassword})
+        notify(user.message)
       })
       .catch(e => {
         console.log(e.message);
-        setUser({...user, message: e.message})
+        notify(e.message)
+        setUser({...user, message: ""})
       });
     }
   }
@@ -88,7 +97,8 @@ const AddUser = (props) => {
     const { name, email, role } = user;
     if (name) {
       dispatch(updateUser(userData.id, email, name, role))
-      .then(data => { 
+      .then(data => {
+        errorHandler(data) 
         setUser({
           ...user,
           id: data.user.id,
@@ -100,10 +110,12 @@ const AddUser = (props) => {
         localStorage.setItem('userId', data.id)
         props.history.push("/panel/users")
         setUser({...user, name:'', message: data.user.name + " has been updated successfully" })
+        notify(user.message)
       })
       .catch(e => {
         console.log(e.message);
-        setUser({...user, message: e.message})
+        notify(e.message)
+        setUser({...user, message: ""})
       });
     }
   }
@@ -113,19 +125,26 @@ const AddUser = (props) => {
       {props.location.pathname === "/panel/updateUser" ? (<h3>Update User</h3>) : (<h3>Add User</h3>)}
 
       <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
-      "Enter name" defaultValue={user.name} handleChange={formik.handleChange}/>
+      "Enter name" defaultValue={user.name} handleChange={formik.handleChange} required={true}/>
+
+      <FormErrors formErrors={user.formErrors} fieldname={"name"}/>
 
       <Input divClass="form-group" label="Email" type="email" name="email" class="form-control" placeholder=
-      "Enter email" defaultValue={user.email} handleChange={formik.handleChange}/>
+      "Enter email" defaultValue={user.email} handleChange={formik.handleChange} required={true}/>
+
+      <FormErrors formErrors={user.formErrors} fieldname={"email"}/>
 
       <label divClass="form-group">
         Role&nbsp;&nbsp;&nbsp; 
-        <select name="role" defaultValue={user.role} onChange={formik.handleChange}>
+        <select name="role" defaultValue={user.role} onChange={formik.handleChange} required>
           <option>select role...</option>
           <option key="1" data-key="1">admin</option>
           <option key="2"data-key="2">user</option>
         </select>
       </label>
+
+      <FormErrors formErrors={user.formErrors} fieldname={"role"}/>
+
       <br />
       <br />
       {props.location.pathname === "/panel/updateUser" ? (

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useFormik } from 'formik';
 
 import Login from './login'
 import SignUp from './signup'
 import { RouteLayout } from "./formLayouts/routeLayout"
 import Dashboard from "../components/dashboard"
+import PageNotFound from '../pages/404-page'
 
 const Launch = () => {
 
@@ -15,9 +16,7 @@ const Launch = () => {
       email: "",
       password: "",
       name: "",
-      formErrors: { email: "", password: "" },
-      emailValid: false,
-      passwordValid: false,
+      formErrors: { email: "", password: "", name: ""},
       formValid: false,
       message: "",
       className: ""
@@ -43,10 +42,12 @@ const Launch = () => {
                 <RouteLayout path="/panel/sign-in" class={Login} setUser={setUser} formik={formik}  />
                 <RouteLayout path="/user/sign-in" class={Login} setUser={setUser} formik={formik}  />
               </div>
-            ) : (
-              <RouteLayout path="/dashboard" class={Dashboard} setUser={setUser} formik={formik}/>
+            ) : ( 
+              <RouteLayout path="/properties" class={Dashboard} setUser={setUser} formik={formik}/>
             )}
-            <RouteLayout path="/" class={Login} setUser={setUser} formik={formik} />
+            <RouteLayout path="/panel/sign-in" class={Login} setUser={setUser} formik={formik} />
+            <RouteLayout path="/user/sign-in" class={Login} setUser={setUser} formik={formik}  />
+            <Route component={PageNotFound} />
           </Switch>
         </div>
       </div>
