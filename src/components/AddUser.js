@@ -121,38 +121,42 @@ const AddUser = (props) => {
   }
 
   return (
-    <form onSubmit={saveUser}>
-      {props.location.pathname === "/panel/updateUser" ? (<h3>Update User</h3>) : (<h3>Add User</h3>)}
+    <div className="outer">
+      <div className="inner">
+        <form onSubmit={saveUser}>
+          {props.location.pathname === "/panel/updateUser" ? (<h3>Update User</h3>) : (<h3>Add User</h3>)}
 
-      <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
-      "Enter name" defaultValue={user.name} handleChange={formik.handleChange} required={true}/>
+          <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
+          "Enter name" defaultValue={user.name} handleChange={formik.handleChange} required={true}/>
 
-      <FormErrors formErrors={user.formErrors} fieldname={"name"}/>
+          <FormErrors formErrors={user.formErrors} fieldname={"name"}/>
 
-      <Input divClass="form-group" label="Email" type="email" name="email" class="form-control" placeholder=
-      "Enter email" defaultValue={user.email} handleChange={formik.handleChange} required={true}/>
+          <Input divClass="form-group" label="Email" type="email" name="email" class="form-control" placeholder=
+          "Enter email" defaultValue={user.email} handleChange={formik.handleChange} required={true}/>
 
-      <FormErrors formErrors={user.formErrors} fieldname={"email"}/>
+          <FormErrors formErrors={user.formErrors} fieldname={"email"}/>
 
-      <label divClass="form-group">
-        Role&nbsp;&nbsp;&nbsp; 
-        <select name="role" defaultValue={user.role} onChange={formik.handleChange} required>
-          <option>select role...</option>
-          <option key="1" data-key="1">admin</option>
-          <option key="2"data-key="2">user</option>
-        </select>
-      </label>
+          <label divClass="form-group">
+            Role&nbsp;&nbsp;&nbsp; 
+            <select name="role" defaultValue={user.role} onChange={formik.handleChange} required>
+              <option>select role...</option>
+              <option key="1" data-key="1">admin</option>
+              <option key="2"data-key="2">user</option>
+            </select>
+          </label>
 
-      <FormErrors formErrors={user.formErrors} fieldname={"role"}/>
+          <FormErrors formErrors={user.formErrors} fieldname={"role"}/>
 
-      <br />
-      <br />
-      {props.location.pathname === "/panel/updateUser" ? (
-        <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(user.name)} label="UpdateUser" />
-      ) : (
-        <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(formik.values.name)} label="AddUser" />
-      )}  
-  </form>
+          <br />
+          <br />
+          {props.location.pathname === "/panel/updateUser" ? (
+            <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(user.name)} label="UpdateUser" />
+          ) : (
+            <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(formik.values.name)} label="AddUser" />
+          )}  
+      </form>
+    </div>
+  </div>
   );
 }
 

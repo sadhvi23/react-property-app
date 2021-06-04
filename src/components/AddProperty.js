@@ -158,85 +158,88 @@ const AddProperty = (props) => {
   // Get owner selected value
   const onSelect = (e) => {
     const selectedIndex = e.target.options.selectedIndex;
-    console.log(e.target.options[selectedIndex].getAttribute('data-key'));
     property.owner_id = e.target.options[selectedIndex].getAttribute('data-key')
   }
 
   return (
-    <form onSubmit={saveProperty}>
-    { editMode() ? (<h3>Update Property</h3>) : (<h3>Add Property</h3>)}
+    <div className="outer">
+      <div className="inner">
+        <form onSubmit={saveProperty}>
+        { editMode() ? (<h3>Update Property</h3>) : (<h3>Add Property</h3>)}
 
-    <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
-    "Enter name" defaultValue={property.name} handleChange={formik.handleChange} required={true}/>
+        <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
+        "Enter name" defaultValue={property.name} handleChange={formik.handleChange} required={true}/>
 
-    { editMode() ? (
-      <div>
-        <label divClass="form-group">
-          Owner&nbsp;&nbsp;&nbsp; 
-          <select name="role" value={property.owner_email} onChange={onSelect} onClick={getUsers} required>
-          <option>select owner...</option>
-          {property.users && property.users.length ? (
-            property.users.map((u, index) => (
-              <option data-key={u.id}>{u.email}</option>
-            ))
-          ) : 
-            null 
-          }
-          </select>
-        </label>
-        
-        <br /><br />
-        <div className="checkbox">
-          <label>
-            <input type="checkbox" onClick={onClickUncheck} checked={property.is_approved || null} value="is_approved" onChange={handleOptionChange} />
-            &nbsp;&nbsp;IsApproved
-          </label>
-        </div>
-        <br />
-        <div className="checkbox">
-          <label>
-            <input type="checkbox" onClick={onClickUncheck} checked={property.is_available || null} value="is_available" onChange={handleOptionChange} />
-            &nbsp;&nbsp;IsAvailable
-          </label>
-        </div>
-        <br />
-        <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(property.name)} label="UpdateProperty" />
+        { editMode() ? (
+          <div>
+            <label divClass="form-group">
+              Owner&nbsp;&nbsp;&nbsp; 
+              <select name="role" value={property.owner_email} onChange={onSelect} onClick={getUsers} required>
+              <option>select owner...</option>
+              {property.users && property.users.length ? (
+                property.users.map((u, index) => (
+                  <option data-key={u.id}>{u.email}</option>
+                ))
+              ) : 
+                null 
+              }
+              </select>
+            </label>
+            
+            <br /><br />
+            <div className="checkbox">
+              <label>
+                <input type="checkbox" onClick={onClickUncheck} checked={property.is_approved || null} value="is_approved" onChange={handleOptionChange} />
+                &nbsp;&nbsp;IsApproved
+              </label>
+            </div>
+            <br />
+            <div className="checkbox">
+              <label>
+                <input type="checkbox" onClick={onClickUncheck} checked={property.is_available || null} value="is_available" onChange={handleOptionChange} />
+                &nbsp;&nbsp;IsAvailable
+              </label>
+            </div>
+            <br />
+            <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(property.name)} label="UpdateProperty" />
+          </div>
+        ) : (
+          <div>
+            <label divClass="form-group">
+              Owner&nbsp;&nbsp;&nbsp; 
+              <select name="role" onChange={onSelect} onClick={getUsers} required>
+              <option>select owner...</option>
+              {property.users && property.users.length ? (
+                property.users.map((u, index) => (
+                  <option data-key={u.id}>{u.email}</option>
+                ))
+              ) : 
+                null 
+              }
+              </select>
+            </label>
+            
+            <br /><br />
+            <div className="radio">
+              <label>
+                <input type="checkbox" value="is_approved" onChange={handleOptionChange} />
+                &nbsp;&nbsp;IsApproved
+              </label>
+            </div>
+            <br />
+            <div className="radio">
+              <label>
+                <input type="checkbox" value="is_available" onChange={handleOptionChange} />
+                &nbsp;&nbsp;IsAvailable
+              </label>
+            </div>
+            <br />
+            <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(formik.values.name)} label="AddProperty" />
+          </div>  
+        )}
+        </form>
       </div>
-    ) : (
-      <div>
-        <label divClass="form-group">
-          Owner&nbsp;&nbsp;&nbsp; 
-          <select name="role" onChange={onSelect} onClick={getUsers} required>
-          <option>select owner...</option>
-          {property.users && property.users.length ? (
-            property.users.map((u, index) => (
-              <option data-key={u.id}>{u.email}</option>
-            ))
-          ) : 
-            null 
-          }
-          </select>
-        </label>
-        
-        <br /><br />
-        <div className="radio">
-          <label>
-            <input type="checkbox" value="is_approved" onChange={handleOptionChange} />
-            &nbsp;&nbsp;IsApproved
-          </label>
-        </div>
-        <br />
-        <div className="radio">
-          <label>
-            <input type="checkbox" value="is_available" onChange={handleOptionChange} />
-            &nbsp;&nbsp;IsAvailable
-          </label>
-        </div>
-        <br />
-        <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(formik.values.name)} label="AddProperty" />
-      </div>  
-    )}
-    </form>
+    </div>
   );
 };
 

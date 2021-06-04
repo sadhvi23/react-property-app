@@ -34,19 +34,20 @@ const Launch = () => {
       </nav>
 
       <div className="outer">
-        <div className="inner">
+        <div>
           <Switch>
             <RouteLayout path="/panel/sign-up" class={SignUp} setUser={setUser} formik={formik} />
+            <RouteLayout path="/panel/sign-in" class={Login} setUser={setUser} formik={formik} />
+            <RouteLayout path="/user/sign-in" class={Login} setUser={setUser} formik={formik}  />
+            <RouteLayout path="/" class={Dashboard} setUser={setUser} formik={formik}  />
             {user == null ? (
               <div>
                 <RouteLayout path="/panel/sign-in" class={Login} setUser={setUser} formik={formik}  />
                 <RouteLayout path="/user/sign-in" class={Login} setUser={setUser} formik={formik}  />
               </div>
-            ) : ( 
+            ) : (
               <RouteLayout path="/properties" class={Dashboard} setUser={setUser} formik={formik}/>
             )}
-            <RouteLayout path="/panel/sign-in" class={Login} setUser={setUser} formik={formik} />
-            <RouteLayout path="/user/sign-in" class={Login} setUser={setUser} formik={formik}  />
             <Route component={PageNotFound} />
           </Switch>
         </div>

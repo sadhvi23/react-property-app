@@ -1,4 +1,5 @@
 import {withRouter, useLocation } from 'react-router-dom';
+import React from 'react';
 import { useDispatch } from "react-redux";
 
 import { login } from "../actions/users";
@@ -68,7 +69,7 @@ const Login = (props) => {
   }
   
   return (
-    <div>
+    <div className="inner">
       <form onSubmit={saveUser}>
         <h3>Log in</h3>
 

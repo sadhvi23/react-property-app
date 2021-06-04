@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { withRouter } from 'react-router-dom';
+import { Container, Row, Col} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
 
 import UserItem from "./userItem";
 import { listUser, deactivateUser, deleteUser } from "../actions/users";
@@ -89,29 +91,41 @@ const UserList = (props) => {
   }
   
   return (
-    <div className="outer">
-      <h4 className="title">Users</h4>
-      {data.users && data.users.length ? (
-        data.users.map((u, index) => (
-          <div>
-            <UserItem user={u} key={u.id} />
-            <button onClick={() => {onClickDeactivate(u)}} disabled={isButtonDisable()}>{u.is_active ? "Deactivate": "Activate"}</button>&nbsp;
-            <button onClick={() => {onClickDelete(u)}} disabled={isButtonDisable()}>Delete</button>&nbsp;
-            {u && <button onClick={() => onClickUpdateUser(u)} disabled={isButtonDisable()}>Edit</button>}
-            <br /><br />
-          </div>
-        ))
-      ) : (
-        <div >
-          <span>
-            .....Loading!!!
-          </span>
-        </div>
-      )}
+    <div>
+      <h2 className="title">Users</h2>
+      <br /><br />
+      <Container>
+        <Row>
+          {data.users && data.users.length ? (
+            data.users.map((u, index) => (
+              <Col xs="4">
+                <div>
+                  <Box>
+                    <UserItem user={u} key={u.id} />
+                    <button onClick={() => {onClickDeactivate(u)}} disabled={isButtonDisable()}>{u.is_active ? "Deactivate": "Activate"}</button>&nbsp;
+                    <button onClick={() => {onClickDelete(u)}} disabled={isButtonDisable()}>Delete</button>&nbsp;
+                    {u && <button onClick={() => onClickUpdateUser(u)} disabled={isButtonDisable()}>Edit</button>}
+                  </Box>
+                  <br /><br />
+                </div>
+              </Col>
+            ))
+          ) : (
+            <div >
+              <span>
+                .....Loading!!!
+              </span>
+            </div>
+          )}
+        </Row>
+      </Container>
       {data.users.length && !isButtonDisable() &&
       <button children = "Add new user" onClick={onClickAddUser} />}
     </div>
   );
 };
+
+
+const Box = props => <div className="box">{props.children} </div>;
 
 export default withRouter(UserList);

@@ -51,26 +51,31 @@ const SignUp = (props) => {
   }
 
   return (
-    <form onSubmit={saveUser}>
-      <h3>Register</h3>
+    <div className="outer">
+      <div className="inner">
+        <form onSubmit={saveUser}>
+          <h3>Register</h3>
 
-      <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
-      "Enter name" value={props.formik.values.name} handleChange={props.formik.handleChange} required={true}/>
+          <Input divClass="form-group" label="Name" type="name" name="name" class="form-control" placeholder=
+          "Enter name" value={props.formik.values.name} handleChange={props.formik.handleChange} required={true}/>
 
-      <FormErrors formErrors={props.formik.values.formErrors} fieldname={"name"}/>
+          <FormErrors formErrors={props.formik.values.formErrors} fieldname={"name"}/>
 
-      <Input divClass="form-group" label="Email" type="email" name="email" class="form-control" placeholder=
-      "Enter email" value={props.formik.values.email} handleChange={props.formik.handleChange} required={true}/> 
+          <Input divClass="form-group" label="Email" type="email" name="email" class="form-control" placeholder=
+          "Enter email" value={props.formik.values.email} handleChange={props.formik.handleChange} required={true}/> 
 
-      <FormErrors formErrors={props.formik.values.formErrors} fieldname={"email"}/>
-      
-      <Input divClass="form-group" label="Password" type="password" name="password" class="form-control" placeholder=
-      "Enter password" value={props.formik.values.password} handleChange={props.formik.handleChange} required={true}/>
-      
-      <FormErrors formErrors={props.formik.values.formErrors} fieldname={"password"}/>
+          <FormErrors formErrors={props.formik.values.formErrors} fieldname={"email"}/>
+          
+          <Input divClass="form-group" label="Password" type="password" name="password" class="form-control" placeholder=
+          "Enter password" value={props.formik.values.password} handleChange={props.formik.handleChange} required={true}/>
+          
+          <FormErrors formErrors={props.formik.values.formErrors} fieldname={"password"}/>
 
-      <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(props.formik.values.email && props.formik.values.password)} label="Register" />
-    </form>
+          <Button type="submit" class="btn btn-dark btn-lg btn-block" disabled={!(props.formik.values.email && props.formik.values.password)} label="Register" />
+        </form>
+      </div>
+    </div>
+    
   )
 };
 

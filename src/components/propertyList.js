@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { withRouter } from 'react-router-dom';
+import { Container, Row, Col} from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
 
 import PropertyItem from "./propertyItem";
 import { deactivateProperty, deleteProperty, listProperty, buyProperty, UpdateApprovalStatus } from "../actions/properties";
@@ -138,34 +140,45 @@ const PropertyList = (props) => {
   }
   
   return (
-    <div className="outer">
-      <h4 className="title">Properties</h4>
-      {data.properties && data.properties.length ? (
-        data.properties.map((p, index) => (
-          <div>
-            <PropertyItem property={p} key={index}/>
-            { isButtonDisable() && <button onClick={() => {onClickDeactivate(p)}}>{p.is_active ? "Deactivate" : "Activate"}</button> }&nbsp;&nbsp;
-            { isButtonDisable() && <button onClick={() => {onClickDelete(p)}}>Delete</button> }&nbsp;
-            { isBuyButtonDisable() && <button children = "buy property" onClick={() => {onClickBuy(p)}} />}&nbsp;
-            { isButtonDisable() && p && <button onClick={() => { onClickUpdateProperty(p)}}>Edit</button>}&nbsp;
-            <br />
-            { isApprovalButtonEnable() && <button children = "Approve" disabled={p.is_approved} onClick={() => onClickUpdateApprovalStatus(p, true)} /> }&nbsp;&nbsp;
-            { isApprovalButtonEnable() && <button children = "Reject" disabled={!p.is_approved} onClick={() => onClickUpdateApprovalStatus(p, false)} /> }&nbsp;
-            <br /><br />
-          </div>
-        ))
-      ) : (
-        <div >
-          <span>
-            .....Loading!!!
-          </span>
-        </div>
-      )}
+    <div>
+      <h2 className="title">Properties</h2>
+      <br /><br />
+      <Container>
+        <Row>
+          {data.properties && data.properties.length ? (
+            data.properties.map((p, index) => (
+              <Col xs="4">
+                <div>
+                  <Box>
+                    <PropertyItem property={p} key={index}/>
+                    { isButtonDisable() && <button onClick={() => {onClickDeactivate(p)}}>{p.is_active ? "Deactivate" : "Activate"}</button> }&nbsp;&nbsp;
+                    { isButtonDisable() && <button onClick={() => {onClickDelete(p)}}>Delete</button> }&nbsp;
+                    { isBuyButtonDisable() && <button children = "buy property" onClick={() => {onClickBuy(p)}} />}&nbsp;
+                    { isButtonDisable() && p && <button onClick={() => { onClickUpdateProperty(p)}}>Edit</button>}&nbsp;
+                    <br />
+                    { isApprovalButtonEnable() && <button children = "Approve" disabled={p.is_approved} onClick={() => onClickUpdateApprovalStatus(p, true)} /> }&nbsp;&nbsp;
+                    { isApprovalButtonEnable() && <button children = "Reject" disabled={!p.is_approved} onClick={() => onClickUpdateApprovalStatus(p, false)} /> }&nbsp;
+                  </Box>
+                  <br /><br />
+                </div>
+              </Col>
+            ))
+          ) : (
+            <div >
+              <span>
+                .....Loading!!!
+              </span>
+            </div>
+          )}
+        </Row>
+      </Container>
       { data.properties.length && isButtonDisable() &&
         <button children = "Add new property" onClick={onClickAddProperty} /> 
       }
     </div>
   );
 };
+
+const Box = props => <div className="box">{props.children} </div>;
 
 export default withRouter(PropertyList);

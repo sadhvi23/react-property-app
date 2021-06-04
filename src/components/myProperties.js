@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container, Row, Col} from "react-bootstrap";
 
 import PropertyItem from "./propertyItem";
 import { myProperties} from "../actions/properties";
@@ -28,23 +29,34 @@ const MyProperties = () => {
 
   return (
     <div >
-      <h4 className="title">My Properties</h4>
-      {data.properties && data.properties.length ? (
-        data.properties.map((p, index) => (
-          <div>
-            <PropertyItem property={p} key={index}/>
-            <br />
-          </div>
-        ))
-      ) : (
-        <div >
-          <span>
-            No properties found!
-          </span>
-        </div>
-      )}
+      <h2 className="title">My Properties</h2>
+      <br /><br />
+      <Container>
+        <Row>
+          {data.properties && data.properties.length ? (
+            data.properties.map((p, index) => (
+              <Col xs="4">
+                <div>
+                  <Box>
+                    <PropertyItem property={p} key={index}/>
+                  </Box>
+                  <br />
+                </div>
+              </Col>
+            ))
+          ) : (
+            <div >
+              <span>
+                No properties found!
+              </span>
+            </div>
+          )}
+        </Row>
+      </Container>
     </div>
   );
 };
+
+const Box = props => <div className="box">{props.children} </div>;
 
 export default MyProperties;

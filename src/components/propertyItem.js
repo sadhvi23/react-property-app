@@ -3,23 +3,17 @@ import React from "react";
 const PropertyItem = props => {
   const { property } = props;
   return (
-    <div className="media">
-      <div className="media-left">
-      <div><b>{property.name} </b> 
+    <div className="inner">
+      <div>
+      <div><b>{property.name} </b> <label className="status-label">{property.is_approved ? "Approved" : "Rejected"}</label>
         
       </div>
-        <figure className="image is-64x64">
+        <figure>
           <img
             src="https://compressjpeg.com/images/compressjpeg/icon.png"
             alt={property.name}
           />
         </figure>
-      </div>
-      <div className="media-content">
-        <b style={{ textTransform: "capitalize" }}>
-          <span className="tag is-primary">This is sample property</span>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label className="status-label">{property.is_approved ? "Approved" : "Rejected"}</label>
-        </b>
       </div>
     </div>
   );

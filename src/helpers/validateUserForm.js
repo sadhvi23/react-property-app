@@ -3,7 +3,6 @@ const validateUserForm = (user, setUser, object) => {
   let { formErrors, emailValid, passwordValid, nameValid }  = user
   let fieldName = "";
   let value = "";
-  console.log("formError", formErrors)
 
   Object.keys(object).map(key => {
     fieldName = object[key].name
